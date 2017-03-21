@@ -131,8 +131,6 @@ namespace PiSerialCrashTest
             int i = 0;
             int c = 0;
 
-            uint x = 0;
-
             await this.Dispatcher.RunAsync(DispatchPriority, () =>
             {
                 i = FilePreview.SelectedIndex;
@@ -150,18 +148,18 @@ namespace PiSerialCrashTest
                 s = s += "\r\n";
                 PortDataWriter.WriteString(s);
 
-                //uint x = await PortDataWriter.StoreAsync(); ---Removed---
+                uint x = await PortDataWriter.StoreAsync();
 
-                try
-                {
-                    Task<UInt32> storeAsyncTask;
-                    storeAsyncTask = PortDataWriter.StoreAsync().AsTask();
-                    x = await storeAsyncTask;
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.Message);
-                }
+                //try
+                //{
+                //    Task<UInt32> storeAsyncTask;
+                //    storeAsyncTask = PortDataWriter.StoreAsync().AsTask();
+                //    x = await storeAsyncTask;
+                //}
+                //catch (Exception ex)
+                //{
+                //    Debug.WriteLine(ex.Message);
+                //}
 
 
                 if (x != 0)
