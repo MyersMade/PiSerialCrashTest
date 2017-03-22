@@ -148,19 +148,9 @@ namespace PiSerialCrashTest
                 s = s += "\r\n";
                 PortDataWriter.WriteString(s);
 
-                uint x = await PortDataWriter.StoreAsync();
-
-                //try
-                //{
-                //    Task<UInt32> storeAsyncTask;
-                //    storeAsyncTask = PortDataWriter.StoreAsync().AsTask();
-                //    x = await storeAsyncTask;
-                //}
-                //catch (Exception ex)
-                //{
-                //    Debug.WriteLine(ex.Message);
-                //}
-
+                Task<UInt32> storeAsyncTask;
+                storeAsyncTask = PortDataWriter.StoreAsync().AsTask();
+                uint x = await storeAsyncTask;
 
                 if (x != 0)
                 {
