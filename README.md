@@ -1,6 +1,6 @@
-## Pi Serial Crash Test
+ ## Pi Serial Crash Test
 
-This code collection is here to prove/disprove an issue I've encountered when trying to send data out a serial port using a USB to RS-232 serial device.
+This code collection is here to prove/disprove an issue I've encountered when trying to send data out a serial port using a USB to RS-232 serial device using Windows.Devices.SerialCommunication in a UWP app design to run in Windows IOT Core on a Raspberry Pi 3.
 
 ### Application Oerview
 
