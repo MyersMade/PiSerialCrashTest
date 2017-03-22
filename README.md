@@ -23,11 +23,12 @@ When this application is run on the Windows 10 Desktop PC it functions as intene
 
 When ran from the Raspberry Pi, the application functions as intended, except for when the target RS-232 device has it's RTS line low.  At that point the IOT OS will hang and eventually go to a blue screen with a watchdog fault.
 
-It is intended to examine the value of the .StoreAsync() method following it's execution or timeout based on the .WriteTimeout parameter. 
+It is intended to examine the value returned by the .StoreAsync() method following it's execution or timeout based on the .WriteTimeout parameter. 
 
 ```markdown
-  uint x = await PortDataWriter.StoreAsync();
-
+                Task<UInt32> storeAsyncTask;
+                storeAsyncTask = PortDataWriter.StoreAsync().AsTask();
+                uint x = await storeAsyncTask;
 ```
 
 This works properly in the Windows Desktop environment, but the line above is what appears to cause the Windows IOT Core enviroment to hang.
