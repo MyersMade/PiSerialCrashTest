@@ -36,7 +36,7 @@ namespace PiSerialCrashTest
         DeviceInformationCollection DeviceList;
         SerialDevice Port;
         DataWriter PortDataWriter;
-        CoreDispatcherPriority DispatchPriority = CoreDispatcherPriority.Low;
+        CoreDispatcherPriority DispatchPriority = CoreDispatcherPriority.Normal;
 
         //-----Execute at page load-----
         public MainPage()
@@ -69,6 +69,8 @@ namespace PiSerialCrashTest
             Port.WriteTimeout = TimeSpan.FromMilliseconds(1000);
 
             PortDataWriter = new DataWriter(Port.OutputStream);
+
+            Port.PinChanged += MyPinChanged;
 
             base.OnNavigatedTo(e);
         }
@@ -104,17 +106,19 @@ namespace PiSerialCrashTest
             {
                 if (!FeedActive)
                 {
+                    FilePreview.IsEnabled = false;
                     SingleBtn.IsEnabled = false;
                     FeedBtn.Icon = new SymbolIcon(Symbol.Pause);
 
                     EnableFeed = true;
 
-                    Task t1 = new Task(async () => { await FeedTask(); });
+                    Task t1 = new Task(async () => { await FeedTask(); }, TaskCreationOptions.LongRunning);
                     t1.Start();
                 }
             }
             else
             {
+                FilePreview.IsEnabled = true;
                 SingleBtn.IsEnabled = true;
                 FeedBtn.Icon = new SymbolIcon(Symbol.Play);
 
@@ -191,6 +195,11 @@ namespace PiSerialCrashTest
             });
 
             FeedActive = false;
+        }
+
+        private void MyPinChanged(SerialDevice serialdevice, PinChangedEventArgs pin)
+        {
+            System.Diagnostics.Debug.WriteLine("which pin changed:" + pin.PinChange.ToString());
         }
     }
 }
