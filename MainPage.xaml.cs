@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Devices.SerialCommunication;
@@ -63,14 +64,14 @@ namespace PiSerialCrashTest
             Port.DataBits = 8;
             Port.Parity = SerialParity.None;
             Port.StopBits = SerialStopBitCount.One;
-            Port.Handshake = SerialHandshake.RequestToSend;
+            Port.Handshake = SerialHandshake.RequestToSend;    //<-----Handshaking Enabled!
 
             Port.ReadTimeout = TimeSpan.FromMilliseconds(1000);
             Port.WriteTimeout = TimeSpan.FromMilliseconds(1000);
 
             PortDataWriter = new DataWriter(Port.OutputStream);
 
-            Port.PinChanged += MyPinChanged;
+            Port.ErrorReceived += PortError;
 
             base.OnNavigatedTo(e);
         }
@@ -149,12 +150,22 @@ namespace PiSerialCrashTest
                     s = FilePreview.SelectedItem.ToString();
                 });
 
+                //This commented code was used to bypass the Datawriter for testing
+                /*s = s += "\r\n";
+                StringBuilder sb = new StringBuilder();
+                sb.Insert(0, s);
+                Windows.Storage.Streams.IBuffer b;
+                byte[] ba1 = Encoding.UTF8.GetBytes(s);
+                b = ba1.AsBuffer();
+                uint x = await Port.OutputStream.WriteAsync(b);*/
+
                 s = s += "\r\n";
                 PortDataWriter.WriteString(s);
 
                 Task<UInt32> storeAsyncTask;
-                storeAsyncTask = PortDataWriter.StoreAsync().AsTask();
-                uint x = await storeAsyncTask;
+                storeAsyncTask = PortDataWriter.StoreAsync().AsTask();    //<----This is where program hangs
+
+                uint x = await storeAsyncTask ;
 
                 if (x != 0)
                 {
@@ -197,9 +208,9 @@ namespace PiSerialCrashTest
             FeedActive = false;
         }
 
-        private void MyPinChanged(SerialDevice serialdevice, PinChangedEventArgs pin)
+        private void PortError(SerialDevice serialdevice, ErrorReceivedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("which pin changed:" + pin.PinChange.ToString());
+            System.Diagnostics.Debug.WriteLine("which pin changed:" + e.Error.ToString());
         }
     }
 }
