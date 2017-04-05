@@ -1,4 +1,4 @@
- ## Pi Serial Crash Test
+## Pi Serial Crash Test
 
 This code collection is here to prove/disprove an issue I've encountered when trying to send data out a serial port using a USB to RS-232 serial device using Windows.Devices.SerialCommunication in a UWP app design to run in Windows IOT Core on a Raspberry Pi 3.
 
@@ -14,20 +14,20 @@ Two buttons are provided to the user:
 ### Testing Hardware
 
 - Windows 10 Desktop PC or Raspberry Pi 3 with Windows IOT Core Ver. 10.0.14393.953
-- USB to Serial Converter (FTDI chipset - FT232R USB UART)
+- External USB to Serial Converter (FTDI FT232RL chipset - FT232R USB UART)
 - Null Modem Cable to Target RS-232 Device (i.e. Windows PC with Terminal Emulator such as CoolTerm)
 
 ### Issue
 
 When this application is run on the Windows 10 Desktop PC it functions as intened.
 
-When ran from the Raspberry Pi, the application functions as intended, except for when the target RS-232 device has it's RTS line low.  At that point the IOT OS will hang and eventually go to a blue screen with a watchdog fault.
+When ran from the Raspberry Pi, the application functions as intended, except for when the target RS-232 device has it's RTS line low (or serial cable unplugged).  At that point the IOT OS will hang and eventually go to a blue screen with a watchdog fault.
 
 It is intended to examine the value returned by the .StoreAsync() method following it's execution or timeout based on the .WriteTimeout parameter. 
 
 ```markdown
                 Task<UInt32> storeAsyncTask;
-                storeAsyncTask = PortDataWriter.StoreAsync().AsTask();
+                storeAsyncTask = PortDataWriter.StoreAsync().AsTask();    //<----This is where it hangs in IOT Core
                 uint x = await storeAsyncTask;
 ```
 
