@@ -13,7 +13,8 @@ Two buttons are provided to the user:
 
 ### Testing Hardware
 
-- Windows 10 Desktop PC or Raspberry Pi 3 with Windows IOT Core Ver. 10.0.14393.953
+- Windows 10 Desktop PC
+- Raspberry Pi 3 with Windows IOT Core Ver. 10.0.14393.953
 - External USB to Serial Converter (FTDI FT232RL chipset - FT232R USB UART)
 - Null Modem Cable to Target RS-232 Device (i.e. Windows PC with Terminal Emulator such as CoolTerm)
 
