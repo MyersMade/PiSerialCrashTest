@@ -1,8 +1,8 @@
 ## Pi Serial Crash Test
 
-This code collection is here to prove/disprove an issue I've encountered when trying to send data out a serial port using a USB to RS-232 serial device using Windows.Devices.SerialCommunication in a UWP app design to run in Windows IOT Core on a Raspberry Pi 3.
+This code collection is here to prove/disprove an issue I've encountered when trying to send data out a serial port using a USB to RS-232 serial device using Windows.Devices.SerialCommunication in a UWP app designed to run in Windows IOT Core on a Raspberry Pi 3.
 
-### Application Oerview
+### Application Overview
 
 This application loads a listview with 100 text string items and sets the first one as active.
 
@@ -26,7 +26,7 @@ When ran from the Raspberry Pi, the application functions as intended, except fo
 
 It is intended to examine the value returned by the .StoreAsync() method following it's execution or timeout based on the .WriteTimeout parameter. 
 
-```markdown
+```
                 Task<UInt32> storeAsyncTask;
                 storeAsyncTask = PortDataWriter.StoreAsync().AsTask();    //<----This is where it hangs in IOT Core
                 uint x = await storeAsyncTask;
